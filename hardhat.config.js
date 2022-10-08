@@ -10,5 +10,9 @@ module.exports = {
     hardhat: {
       chainId: 1337,
     },
+    // goerli: {
+    //   url: `https://goerli.infura.io/v3/${process.env.INFURA_KEY}`,
+    //   accounts: [`0x${process.env.ACCOUNT_KEY}`],
+    // },
   },
 };
