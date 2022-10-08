@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import Greeter from './artifacts/contracts/Greeter.sol/Greeter.json';
 import './App.css';
@@ -7,6 +7,11 @@ const greeterAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
 
 function App() {
   const [greeting, setGreetingValue] = useState('');
+  const [chainMessage, setChainMessage] = useState('');
+
+  useEffect(() => {
+    feetchGreeting();
+  }, []);
 
   async function requestAccount() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -22,8 +27,11 @@ function App() {
       );
       try {
         const data = await contract.greet();
-        console.log('data:', data);
+        setChainMessage(data);
       } catch (err) {
+        alert(
+          'There was an error while fetching the contract, please try again later.'
+        );
         console.error('Error:', err);
       }
     }
@@ -46,14 +54,15 @@ function App() {
   return (
     <div className='App'>
       <header className='App-header'>
-        <button onClick={feetchGreeting}>Feetch Greeting</button>
-        <button onClick={setGreeting}>Set Greeting</button>
+        <h2>Message: {chainMessage}</h2>
+
         <input
           name='greetingValue'
           value={greeting}
           onChange={(e) => setGreetingValue(e.target.value)}
           placeholder='Set greeting'
         />
+        <button onClick={setGreeting}>Set Greeting</button>
       </header>
     </div>
   );
